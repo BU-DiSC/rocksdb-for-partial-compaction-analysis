@@ -3,7 +3,8 @@
 source ./scripts/run_workload.sh
 
 if ! [ $# -eq 12 ]; then
-    echo 'in this shell script, there will be six parameters, which are:'
+    echo 'get the number of parameters:' $#
+    echo 'in this shell script, there will be 12 parameters, which are:'
     echo '1. the number of times to run kEnumerate for each workload'
     echo '2. the path of rocksdb'
     echo '3. the path of the experiment workspace'

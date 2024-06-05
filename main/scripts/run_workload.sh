@@ -2,7 +2,8 @@
 
 run_once() {
     if ! [ $# -eq 10 ]; then
-        echo 'in this function, there will be three parameters, which are:'
+        echo 'get the number of parameters:' $#
+        echo 'in this function, there will be 10 parameters, which are:'
         echo '1. the number of all inserted bytes'
         echo '2. the path of the rocksdb'
         echo '3. the path of the experiment'
@@ -24,7 +25,8 @@ run_once() {
 
 run_all_baselines() {
     if ! [ $# -eq 9 ]; then
-        echo 'in this shell script, there will be three parameters, which are:'
+        echo 'get the number of parameters:' $#
+        echo 'in this shell script, there will be 9 parameters, which are:'
         echo '1. the number of all inserted bytes'
         echo '2. the path of the rocksdb'
         echo '3. the path of the experiment workspace'
@@ -63,7 +65,8 @@ run_all_baselines() {
 
 run_enumerate() {
     if ! [ $# -eq 12 ]; then
-        echo 'in this shell script, there will be six parameters, which are:'
+        echo 'get the number of parameters:' $#
+        echo 'in this shell script, there will be 12 parameters, which are:'
         echo '1. the number of runs'
         echo '2. the number of all inserted bytes'
         echo '3. the path of the rocksdb'
@@ -100,7 +103,8 @@ run_enumerate() {
 
 initialize_workspace() {
     if ! [ $# -eq 1 ]; then
-        echo 'in this shell script, there will be five parameters, which are:'
+        echo 'get the number of parameters:' $#
+        echo 'in this shell script, there will be 1 parameters, which are:'
         echo '1. the path of the experiment workspace'
         exit 1
     fi
