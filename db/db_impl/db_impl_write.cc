@@ -17,7 +17,7 @@
 #include "test_util/sync_point.h"
 #include "util/cast_util.h"
 
-#include "cs561/all_files_enumerator.h"
+#include "enumerate/all_files_enumerator.h"
 
 namespace ROCKSDB_NAMESPACE {
 // Convenience methods
@@ -2299,10 +2299,10 @@ Status DBImpl::SwitchMemtable(ColumnFamilyData* cfd, WriteContext* context) {
   //                                               cfd->mem()->get_data_size());
   // std::string log_str = "new memory table size: " +
   //                       std::to_string(cfd->mem()->get_data_size());
-  // CS561Log::Log(log_str);
+  // EnumerateLog::Log(log_str);
   // log_str = "new memory table number of entries: " +
   //           std::to_string(cfd->mem()->num_entries());
-  // CS561Log::Log(log_str);
+  // EnumerateLog::Log(log_str);
   cfd->imm()->Add(cfd->mem(), &context->memtables_to_free_);
   new_mem->Ref();
   cfd->SetMemtable(new_mem);

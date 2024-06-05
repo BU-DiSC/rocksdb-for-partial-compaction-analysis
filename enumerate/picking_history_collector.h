@@ -7,9 +7,9 @@
 #include <atomic>
 
 //#include "version_set.h"
-#include "cs561/cs561_log.h"
-#include "cs561/file_serializer.h"
-#include "cs561/version_forest.h"
+#include "enumerate/enumerate_log.h"
+#include "enumerate/file_serializer.h"
+#include "enumerate/version_forest.h"
 #include "db/version_edit.h"
 
 namespace ROCKSDB_NAMESPACE {

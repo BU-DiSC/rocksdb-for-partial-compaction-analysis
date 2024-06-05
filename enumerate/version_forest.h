@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "cs561/cs561_log.h"
-#include "cs561/file_serializer.h"
+#include "enumerate/enumerate_log.h"
+#include "enumerate/file_serializer.h"
 
 namespace ROCKSDB_NAMESPACE {
 

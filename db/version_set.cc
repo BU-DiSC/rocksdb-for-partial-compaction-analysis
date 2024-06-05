@@ -90,8 +90,8 @@
 #undef WITH_COROUTINES
 // clang-format on
 
-#include "cs561/all_files_enumerator.h"
-#include "cs561/cs561_option.h"
+#include "enumerate/all_files_enumerator.h"
+#include "enumerate/enumerate_option.h"
 
 namespace ROCKSDB_NAMESPACE {
 
@@ -7445,8 +7445,8 @@ void VersionStorageInfo::PickUnselectedFile(
     const MutableCFOptions& options) {
   
   // Only select last similar file for L0->L1 compaction
-  // except for the case of SelectLastSimilar strategy
-  if (!(AllFilesEnumerator::GetInstance().strategy == AllFilesEnumerator::CompactionStrategy::SelectLastSimilar
+  // except for the case of RefinedMOR strategy
+  if (!(AllFilesEnumerator::GetInstance().strategy == AllFilesEnumerator::CompactionStrategy::RefinedMOR
     || (start_level == 1 && output_level == 2)) || start_level == 0) {
     return;
   }
@@ -7488,7 +7488,7 @@ void VersionStorageInfo::PickUnselectedFile(
   if (AllFilesEnumerator::GetInstance().strategy == AllFilesEnumerator::CompactionStrategy::EnumerateAll && has_zero_overlapping_ratio) {
     AllFilesEnumerator::GetInstance().CollectCompactionInfo(files_, file_overlapping_ratio, 
       num_non_empty_levels_, level, files_by_compaction_pri[0]);
-    CS561Log::Log("EnumerateAll: has_zero_overlapping_ratio");
+    EnumerateLog::Log("EnumerateAll: has_zero_overlapping_ratio");
     return;
   }
 
@@ -7513,8 +7513,8 @@ void VersionStorageInfo::PickUnselectedFile(
       chosen_file_index = AllFilesEnumerator::GetInstance().NextChoiceForManual();
       std::cout << "chosen_file_index: " << chosen_file_index << std::endl;
       break;
-    case AllFilesEnumerator::CompactionStrategy::SelectLastSimilar:
-      chosen_file_index = AllFilesEnumerator::GetInstance().MaybeSelectLastSimilarFile(files, file_overlapping_ratio);
+    case AllFilesEnumerator::CompactionStrategy::RefinedMOR:
+      chosen_file_index = AllFilesEnumerator::GetInstance().MaybeRefinedMORFile(files, file_overlapping_ratio);
       break;
     default:
       break;

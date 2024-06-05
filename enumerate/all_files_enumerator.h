@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "cs561/picking_history_collector.h"
-#include "cs561/request_info_collector.h"
+#include "enumerate/picking_history_collector.h"
+#include "enumerate/request_info_collector.h"
 
 #include "db/version_set.h"
 
@@ -45,7 +45,7 @@ public:
     Rocksdb,
     EnumerateAll,
     Manual,
-    SelectLastSimilar,
+    RefinedMOR,
   };
 
   // Compaction strategy
@@ -68,7 +68,7 @@ public:
    */
   int GetPickingFile(std::vector<Fsize>& temp, int level, const std::vector<uint64_t>& file_overlapping_ratio);
 
-  int MaybeSelectLastSimilarFile(const std::vector<FileMetaData*>& files, const std::vector<uint64_t>& file_overlapping_ratio);
+  int MaybeRefinedMORFile(const std::vector<FileMetaData*>& files, const std::vector<uint64_t>& file_overlapping_ratio);
 
   /**
    * according to the algorithm we provided, choose a new file

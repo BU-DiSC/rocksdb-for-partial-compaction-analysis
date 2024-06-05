@@ -81,7 +81,7 @@ struct CompactionInfo {
   }
 };
 
-class CS561Log {
+class EnumerateLog {
   private:
   static std::string LOG_FILEPATH;
   static std::string MINIMUM_FILEPATH;

@@ -1,6 +1,6 @@
-#include "cs561/all_files_enumerator.h"
+#include "enumerate/all_files_enumerator.h"
 
-#include "cs561/cs561_log.h"
+#include "enumerate/enumerate_log.h"
 
 namespace ROCKSDB_NAMESPACE {
 
@@ -13,7 +13,7 @@ AllFilesEnumerator::AllFilesEnumerator()
       file_size_collector(INFO_COLLECTOR_SIZE),
       log_level(1),
       compaction_counter(0) {
-  // CS561Log::Log("AllFilesEnumerator is created");
+  // EnumerateLog::Log("AllFilesEnumerator is created");
   }
 
 int AllFilesEnumerator::GetPickingFile(
@@ -28,11 +28,11 @@ int AllFilesEnumerator::GetPickingFile(
   // if this is a new version, record the file information
   // of this version to disk
   if (!collector.GetVersionForest().IsVersionExist(level, hash_value)) {
-    CS561Log::LogVersion(temp, hash_value);
+    EnumerateLog::LogVersion(temp, hash_value);
   }
   // log
   if (log_level == 1) {
-    CS561Log::Log("Level: " + std::to_string(level) +
+    EnumerateLog::Log("Level: " + std::to_string(level) +
                   ", Version: " + std::to_string(hash_value) +
                   ", File index: " + std::to_string(index));
   }
@@ -56,8 +56,8 @@ int AllFilesEnumerator::GetPickingFile(
   return static_cast<int>(index);
 }
 
-int AllFilesEnumerator::MaybeSelectLastSimilarFile(const std::vector<FileMetaData*>& files, const std::vector<uint64_t>& file_overlapping_ratio) {
-  // std::cout << "MaybeSelectLastSimilarFile" << std::endl;
+int AllFilesEnumerator::MaybeRefinedMORFile(const std::vector<FileMetaData*>& files, const std::vector<uint64_t>& file_overlapping_ratio) {
+  // std::cout << "MaybeRefinedMORFile" << std::endl;
   // std::cout << "files.size(): " << files.size() << ", file_overlapping_ratio.size(): " << file_overlapping_ratio.size() << std::endl;
 
   // find the file with the smallest overlapping ratio
@@ -85,12 +85,12 @@ int AllFilesEnumerator::MaybeSelectLastSimilarFile(const std::vector<FileMetaDat
     return static_cast<int>(min_overlap_index);
   }
 
-  CS561Log::Log("Encounter a case in SelectLastSimilarFile");
+  EnumerateLog::Log("Encounter a case in RefinedMORFile");
 
   // If the candidate file has no next file, directly select it
   if (candidate_files.back() == files.size() - 1) {
     if (min_overlap_index == candidate_files.back()) {
-      CS561Log::Log("Select the same file as MinOverlappingRatio in SelectLastSimilarFile");
+      EnumerateLog::Log("Select the same file as MinOverlappingRatio in RefinedMORFile");
     }
     return static_cast<int>(candidate_files.back());
   }
@@ -106,7 +106,7 @@ int AllFilesEnumerator::MaybeSelectLastSimilarFile(const std::vector<FileMetaDat
   }
 
   if (min_overlap_index == selected_file_index) {
-    CS561Log::Log("Select the same file as MinOverlappingRatio in SelectLastSimilarFile");
+    EnumerateLog::Log("Select the same file as MinOverlappingRatio in RefinedMORFile");
   }
 
   // std::cout << "selected_file_index: " << selected_file_index << std::endl;
@@ -791,7 +791,7 @@ void AllFilesEnumerator::CollectCompactionInfo(
       hash_value, index);
   // log
   if (log_level == 2) {
-    CS561Log::LogRegularCompactionInfo(
+    EnumerateLog::LogRegularCompactionInfo(
         collector.GetCompactionsInfo().back(),
         static_cast<int>(collector.GetCompactionsInfo().size()));
   }
@@ -813,14 +813,14 @@ AllFilesEnumerator::GetCollector() {
 
 void AllFilesEnumerator::Terminate() {
   // Before termination, dump version forests to file
-  CS561Log::Log("Start to dump version forests to file");
+  EnumerateLog::Log("Start to dump version forests to file");
   collector.GetVersionForest().DumpToFile();
   // record WA and minimum in this run
   // collector.DumpWAResult();
   // Log
-  // CS561Log::Log("Terminate program due to early stop");
+  // EnumerateLog::Log("Terminate program due to early stop");
   // Terminate program
-  CS561Log::Log("Terminate program");
+  EnumerateLog::Log("Terminate program");
   _exit(1);
 }
 
@@ -830,13 +830,13 @@ void AllFilesEnumerator::Pruning() {
     // Set the current version to be fully enumerated (no need to explore further)
     collector.GetVersionForest().GetLevelVersionTree(1).SetCurrentVersionFullyEnumerated(chosen_file_index_);
     // set the flag of the current node
-    CS561Log::Log("Terminate reason: current WA already exceeds the minimum");
+    EnumerateLog::Log("Terminate reason: current WA already exceeds the minimum");
     // check other file choices in the same compaction
     uint64_t threshold = involved_bytes_[chosen_file_index_];
     for (size_t i = chosen_file_index_ + 1; i < involved_bytes_.size(); i++) {
       if (involved_bytes_[i] >= threshold) {
         // set the flag of the current node
-        CS561Log::Log("Set file " + std::to_string(i) + " of last compaction to be fully enumerated");
+        EnumerateLog::Log("Set file " + std::to_string(i) + " of last compaction to be fully enumerated");
         // Set the current version to be fully enumerated (no need to explore further)
         collector.GetVersionForest().GetLevelVersionTree(1).SetCurrentVersionFullyEnumerated(i);
       }

@@ -25,7 +25,7 @@
 #include "util/concurrent_task_limiter_impl.h"
 #include "util/udt_util.h"
 
-#include "cs561/all_files_enumerator.h"
+#include "enumerate/all_files_enumerator.h"
 
 namespace ROCKSDB_NAMESPACE {
 

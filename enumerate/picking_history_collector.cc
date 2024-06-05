@@ -1,9 +1,9 @@
-#include "cs561/picking_history_collector.h"
+#include "enumerate/picking_history_collector.h"
 
 #include <fstream>
 #include <iomanip>
 
-#include "cs561/cs561_log.h"
+#include "enumerate/enumerate_log.h"
 
 using std::endl;
 
@@ -11,21 +11,21 @@ namespace ROCKSDB_NAMESPACE {
 
 PickingHistoryCollector::PickingHistoryCollector()
     : DUMP_FILEPATH_LEVEL0(
-          CS561Log::LOG_ROOT +
+          EnumerateLog::LOG_ROOT +
           "/history/picking_history_level0"),
       DUMP_FILEPATH_LEVEL1(
-          CS561Log::LOG_ROOT +
+          EnumerateLog::LOG_ROOT +
           "/history/picking_history_level1"),
       forests(VersionForest(
           {DUMP_FILEPATH_LEVEL0, DUMP_FILEPATH_LEVEL1})) {
-  // CS561Log::Log("Begin PickingHistoryCollector constructor");
-  auto p = CS561Log::LoadMinimum();
+  // EnumerateLog::Log("Begin PickingHistoryCollector constructor");
+  auto p = EnumerateLog::LoadMinimum();
   global_min_WA = p.first;
   global_min_WA_corresponding_left_bytes = p.second;
   WA = 0;
   left_bytes = 0;
   compaction_time = 0;
-  // CS561Log::Log("Finish PickingHistoryCollector constructor");
+  // EnumerateLog::Log("Finish PickingHistoryCollector constructor");
 }
 
 PickingHistoryCollector::~PickingHistoryCollector() {
@@ -89,23 +89,23 @@ VersionForest& PickingHistoryCollector::GetVersionForest() {
 
 void PickingHistoryCollector::DumpToFile() {
   // dump wa
-  CS561Log::LogResult(WA, WA_corresponding_left_bytes);
+  EnumerateLog::LogResult(WA, WA_corresponding_left_bytes);
   // compute minimum WA
   if ((WA + WA_corresponding_left_bytes) <=
       (global_min_WA +
        global_min_WA_corresponding_left_bytes)) {
     // dump minimum
-    CS561Log::LogMinimum(WA, WA_corresponding_left_bytes,
+    EnumerateLog::LogMinimum(WA, WA_corresponding_left_bytes,
                          compactions_info);
   }
   // log compaction latency
-  CS561Log::Log("compaction_time: " +
+  EnumerateLog::Log("compaction_time: " +
                 std::to_string(compaction_time) + "us");
 }
 
 void PickingHistoryCollector::DumpWAResult() {
   // dump wa
-  CS561Log::LogResult(WA, WA_corresponding_left_bytes);
+  EnumerateLog::LogResult(WA, WA_corresponding_left_bytes);
 }
 
 void PickingHistoryCollector::DumpWAMinimum() {
@@ -114,7 +114,7 @@ void PickingHistoryCollector::DumpWAMinimum() {
       (global_min_WA +
        global_min_WA_corresponding_left_bytes)) {
     // dump minimum
-    CS561Log::LogMinimum(WA, WA_corresponding_left_bytes,
+    EnumerateLog::LogMinimum(WA, WA_corresponding_left_bytes,
                          compactions_info);
   }
 }

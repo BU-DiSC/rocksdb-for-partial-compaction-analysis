@@ -1,7 +1,7 @@
 //
 // Created by bruce on 3/25/2023.
 //
-#include "cs561/version_forest.h"
+#include "enumerate/version_forest.h"
 
 #include <cassert>
 #include <iomanip>
@@ -44,7 +44,7 @@ std::ostream& operator<<(std::ostream& os,
       os << child_id << TAB;
     }
   }
-  // CS561Log::Log(ss.str());
+  // EnumerateLog::Log(ss.str());
   os << std::endl;
 
   return os;
@@ -214,7 +214,7 @@ size_t LevelVersionTree::GetCompactionFile( size_t hash_value, int file_num) {
     version_nodes[index].fully_enumerated = true;
     std::stringstream ss;
     ss << std::setfill('0') << std::setw(sizeof(size_t) * 2) << std::hex << hash_value;
-    CS561Log::Log("Terminate reason: all files of version " + ss.str() + " has been selected.");
+    EnumerateLog::Log("Terminate reason: all files of version " + ss.str() + " has been selected.");
     return std::numeric_limits<size_t>::max();
   }
   // set the chosen child to be -1, because we are not sure whether there is a compaction after this
@@ -230,9 +230,9 @@ size_t LevelVersionTree::GetCompactionFile( size_t hash_value, int file_num) {
 
 LevelVersionTree::LevelVersionTree(const std::string& fp)
     : file_path(fp) {
-  // CS561Log::Log("Load version tree from file: " + file_path);
+  // EnumerateLog::Log("Load version tree from file: " + file_path);
   LoadFromFile();
-  // CS561Log::Log("Finish loading from file: " + file_path);
+  // EnumerateLog::Log("Finish loading from file: " + file_path);
 }
 
 LevelVersionTree::~LevelVersionTree() noexcept {}
@@ -260,7 +260,7 @@ void LevelVersionTree::SetCurrentVersionFullyEnumerated(size_t index) {
     break;
   }
   if (all_fully_enumerated) {
-    CS561Log::Log("Current version is fully enumerated.");
+    EnumerateLog::Log("Current version is fully enumerated.");
     version_nodes[last_version_id].fully_enumerated = true;
   }
   // if (version_nodes[last_version_id].chosen_children[last_chosen_file_index] != std::numeric_limits<size_t>::max()) {

@@ -43,7 +43,7 @@
 #include "util/coding.h"
 #include "util/mutexlock.h"
 
-#include "cs561/cs561_log.h"
+#include "enumerate/enumerate_log.h"
 
 namespace ROCKSDB_NAMESPACE {
 
@@ -220,7 +220,7 @@ bool MemTable::ShouldFlushNow() {
     //                       std::to_string(write_buffer_size) + " + " +
     //                       std::to_string(kArenaBlockSize) + " * " +
     //                       std::to_string(kAllowOverAllocationRatio);
-    // CS561Log::Log(log_str);
+    // EnumerateLog::Log(log_str);
     return true;
   }
 
@@ -253,14 +253,14 @@ bool MemTable::ShouldFlushNow() {
     // std::string log_str = "arena_.AllocatedAndUnused() < kArenaBlockSize / 4, where " +
     //                       std::to_string(arena_.AllocatedAndUnused()) + " < " +
     //                       std::to_string(kArenaBlockSize) + " / 4"; 
-    // CS561Log::Log(log_str);
+    // EnumerateLog::Log(log_str);
     // log_str = "allocated_memory = " + std::to_string(allocated_memory) + ", table_->ApproximateMemoryUsage() = " + std::to_string(table_->ApproximateMemoryUsage()) + ", range_del_table_->ApproximateMemoryUsage() = " + std::to_string(range_del_table_->ApproximateMemoryUsage()) + ", arena_.MemoryAllocatedBytes() = " + std::to_string(arena_.MemoryAllocatedBytes());
-    // CS561Log::Log(log_str);
+    // EnumerateLog::Log(log_str);
     // log_str = std::to_string(allocated_memory) + " > " +
     //                       std::to_string(write_buffer_size) + " + " +
     //                       std::to_string(kArenaBlockSize) + " * " +
     //                       std::to_string(kAllowOverAllocationRatio);
-    // CS561Log::Log(log_str);
+    // EnumerateLog::Log(log_str);
   }
   return arena_.AllocatedAndUnused() < kArenaBlockSize / 4;
 }

@@ -1,34 +1,34 @@
-#include "cs561/cs561_log.h"
+#include "enumerate/enumerate_log.h"
 
 #include <chrono>
 #include <iomanip>
 
 namespace ROCKSDB_NAMESPACE {
 
-std::string CS561Log::LOG_ROOT = "experiment";
-std::string CS561Log::LOG_FILEPATH = "log.txt";
-std::string CS561Log::MINIMUM_FILEPATH = "minimum.txt";
-std::string CS561Log::VERSION_INFO_FILEPATH =
+std::string EnumerateLog::LOG_ROOT = "experiment";
+std::string EnumerateLog::LOG_FILEPATH = "log.txt";
+std::string EnumerateLog::MINIMUM_FILEPATH = "minimum.txt";
+std::string EnumerateLog::VERSION_INFO_FILEPATH =
     "version_info.txt";
-std::string CS561Log::TMP_RESULT_FILEPATH =
+std::string EnumerateLog::TMP_RESULT_FILEPATH =
     "tmp_result.txt";
-std::vector<std::string> CS561Log::DUMP_FILEPATHS = {
+std::vector<std::string> EnumerateLog::DUMP_FILEPATHS = {
     "history/picking_history_level0",
     "history/picking_history_level1"};
 
-void CS561Log::SetLogRootPath(
+void EnumerateLog::SetLogRootPath(
     const std::string& root_path) {
   LOG_ROOT = root_path;
 }
 
-void CS561Log::Log(const std::string& content,
+void EnumerateLog::Log(const std::string& content,
                    LogLevel log_level) {
   std::ofstream log_file(LOG_ROOT + "/" + LOG_FILEPATH,
                          std::ios::app);
   LogContent(log_file, content, log_level);
 }
 
-void CS561Log::LogContent(std::ofstream& of, const std::string& content,
+void EnumerateLog::LogContent(std::ofstream& of, const std::string& content,
                    LogLevel log_level) {
   const auto now = std::chrono::system_clock::to_time_t(
       std::chrono::system_clock::now());
@@ -55,7 +55,7 @@ void CS561Log::LogContent(std::ofstream& of, const std::string& content,
   of.flush();
 }
 
-void CS561Log::LogResult(size_t WA, size_t left_bytes) {
+void EnumerateLog::LogResult(size_t WA, size_t left_bytes) {
   Log("total written bytes: " + std::to_string(WA) +
       ", left bytes: " + std::to_string(left_bytes));
   // std::ofstream content_file(LOG_ROOT + "/content.txt",
@@ -63,7 +63,7 @@ void CS561Log::LogResult(size_t WA, size_t left_bytes) {
   // LogContent(content_file, "total written bytes: " + std::to_string(WA));
 }
 
-void CS561Log::LogMinimum(
+void EnumerateLog::LogMinimum(
     size_t WA, size_t left_bytes,
     const std::vector<CompactionInfo>& compactions_info) {
   // Log minimum written bytes
@@ -74,7 +74,7 @@ void CS561Log::LogMinimum(
   LogMinimumCompactionInfo(compactions_info);
 }
 
-std::pair<size_t, size_t> CS561Log::LoadMinimum() {
+std::pair<size_t, size_t> EnumerateLog::LoadMinimum() {
   std::ifstream f(LOG_ROOT + "/" + MINIMUM_FILEPATH);
   size_t wa, left_bytes;
   f >> wa >> left_bytes;
@@ -82,7 +82,7 @@ std::pair<size_t, size_t> CS561Log::LoadMinimum() {
   return {wa, left_bytes};
 }
 
-void CS561Log::LogVersion(const std::vector<Fsize>& temp,
+void EnumerateLog::LogVersion(const std::vector<Fsize>& temp,
                           size_t hash_value) {
   std::ofstream version_info_file(
       LOG_ROOT + "/" + VERSION_INFO_FILEPATH,
@@ -133,7 +133,7 @@ void CS561Log::LogVersion(const std::vector<Fsize>& temp,
   version_info_file << std::endl;
 }
 
-void CS561Log::LogCompactionsInfo(
+void EnumerateLog::LogCompactionsInfo(
     std::ofstream& target,
     const std::vector<CompactionInfo>& compactions_info) {
   target << std::endl;
@@ -142,14 +142,14 @@ void CS561Log::LogCompactionsInfo(
   }
 }
 
-void CS561Log::LogMinimumCompactionInfo(
+void EnumerateLog::LogMinimumCompactionInfo(
     const std::vector<CompactionInfo>& compactions_info) {
   std::ofstream f(LOG_ROOT + "/" + MINIMUM_FILEPATH,
                   std::ios::app);
   LogCompactionsInfo(f, compactions_info);
 }
 
-void CS561Log::LogRegularCompactionInfo(
+void EnumerateLog::LogRegularCompactionInfo(
     const CompactionInfo& compaction_info,
     int compaction_index) {
   std::ofstream f(LOG_ROOT + "/" + LOG_FILEPATH,
@@ -157,7 +157,7 @@ void CS561Log::LogRegularCompactionInfo(
   LogCompactionInfo(f, compaction_info, compaction_index);
 }
 
-void CS561Log::LogCompactionInfo(
+void EnumerateLog::LogCompactionInfo(
     std::ofstream& target,
     const CompactionInfo& compaction_info,
     int compaction_index) {
@@ -175,7 +175,7 @@ void CS561Log::LogCompactionInfo(
   }
 }
 
-void CS561Log::LogCompactionInfoForLevel(
+void EnumerateLog::LogCompactionInfoForLevel(
     std::ofstream& target,
     const CompactionInfo& compaction_info, int level) {
   target << "Information of files in level " << level
@@ -250,7 +250,7 @@ void CS561Log::LogCompactionInfoForLevel(
   target << std::endl;
 }
 
-void CS561Log::AlignOutput(std::ofstream& of,
+void EnumerateLog::AlignOutput(std::ofstream& of,
                            const std::string& align_target,
                            const std::string& output) {
   size_t align_length = (floor(static_cast<double>(align_target.length()) / 4) + 1) * 4;
@@ -264,7 +264,7 @@ void CS561Log::AlignOutput(std::ofstream& of,
   }
 }
 
-std::string CS561Log::ReadFinishEnumeration(int level) {
+std::string EnumerateLog::ReadFinishEnumeration(int level) {
   std::ifstream f(LOG_ROOT + "/" + DUMP_FILEPATHS[level]);
   size_t line = 4;
   size_t column = 5;
@@ -281,7 +281,7 @@ std::string CS561Log::ReadFinishEnumeration(int level) {
   return tmp;
 }
 
-void CS561Log::LogWA(size_t WA, int type) {
+void EnumerateLog::LogWA(size_t WA, int type) {
   std::ifstream f(LOG_ROOT + "/" + TMP_RESULT_FILEPATH,
                   std::ios::app);
   // roundrobin wa, minoverlappingratio wa and optimal wa
@@ -299,7 +299,7 @@ void CS561Log::LogWA(size_t WA, int type) {
   f2 << rbwa << " " << mowa << " " << opwa << std::endl;
 }
 
-void CS561Log::LogSimpleMinimumCompactionInfo(
+void EnumerateLog::LogSimpleMinimumCompactionInfo(
     std::ofstream& of,
     const std::vector<CompactionInfo>& compactions_info) {
   of << "Optimal compaction choice rank: ";
