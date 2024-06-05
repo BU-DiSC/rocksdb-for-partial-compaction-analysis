@@ -17,7 +17,7 @@ run_once() {
         exit 1
     fi
     find $2 -mindepth 1 -delete
-    ./simple_example $4 $1 $2 $3 $5 0 0 $6 $7 $8 $9 ${10}
+    ./simple_runner $4 $1 $2 $3 $5 0 0 $6 $7 $8 $9 ${10}
     cp $2/LOG $3/LOG_$4
     rocksdb_size=$(du -sk $2 | awk '{ printf "%dK\n", $1 }')
     echo "$4: $rocksdb_size" >> $3/rocksdb_size.txt
@@ -39,25 +39,25 @@ run_all_baselines() {
         exit 1
     fi
     find $2 -mindepth 1 -delete
-    ./simple_example kRoundRobin $1 $2 $3 $4 0 0 $5 $6 $7 $8 $9
+    ./simple_runner kRoundRobin $1 $2 $3 $4 0 0 $5 $6 $7 $8 $9
     cp $2/LOG $3/LOG_RR
     rocksdb_size=$(du -sk $2 | awk '{ printf "%dK\n", $1 }')
     echo "kRoundRobin: $rocksdb_size" >> $3/rocksdb_size.txt
 
     find $2 -mindepth 1 -delete
-    ./simple_example kMinOverlappingRatio $1 $2 $3 $4 0 0 $5 $6 $7 $8 $9
+    ./simple_runner kMinOverlappingRatio $1 $2 $3 $4 0 0 $5 $6 $7 $8 $9
     cp $2/LOG $3/LOG_MOR
     rocksdb_size=$(du -sk $2 | awk '{ printf "%dK\n", $1 }')
     echo "kMinOverlappingRatio: $rocksdb_size" >> $3/rocksdb_size.txt
 
     find $2 -mindepth 1 -delete
-    ./simple_example kOldestLargestSeqFirst $1 $2 $3 $4 0 0 $5 $6 $7 $8 $9
+    ./simple_runner kOldestLargestSeqFirst $1 $2 $3 $4 0 0 $5 $6 $7 $8 $9
     cp $2/LOG $3/LOG_OLSF
     rocksdb_size=$(du -sk $2 | awk '{ printf "%dK\n", $1 }')
     echo "kOldestLargestSeqFirst: $rocksdb_size" >> $3/rocksdb_size.txt
 
     find $2 -mindepth 1 -delete
-    ./simple_example kOldestSmallestSeqFirst $1 $2 $3 $4 0 0 $5 $6 $7 $8 $9
+    ./simple_runner kOldestSmallestSeqFirst $1 $2 $3 $4 0 0 $5 $6 $7 $8 $9
     cp $2/LOG $3/LOG_OSSF
     rocksdb_size=$(du -sk $2 | awk '{ printf "%dK\n", $1 }')
     echo "kOldestSmallestSeqFirst: $rocksdb_size" >> $3/rocksdb_size.txt
@@ -85,7 +85,7 @@ run_enumerate() {
     do
         echo 'run' $i
         find $3 -mindepth 1 -delete
-        ./simple_example kEnumerateAll $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12}
+        ./simple_runner kEnumerateAll $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12}
 
         # check whether to stop
         ./check_finish_enumeration $4

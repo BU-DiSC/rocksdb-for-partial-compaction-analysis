@@ -18,13 +18,13 @@ CFLAGS += -Wstrict-prototypes
 
 .PHONY: clean librocksdb
 
-all: simple_example
+all: simple_runner
 
-simple_example: librocksdb simple_example.cc
+simple_runner: librocksdb simple_runner.cc
 	$(CXX) $(CXXFLAGS) $@.cc -o$@ ../librocksdb.a -I../include -I.. -O2 -std=c++17 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS) -lstdc++fs
 
 clean:
-	rm -rf ./simple_example
+	rm -rf ./simple_runner
 
 librocksdb:
 	cd .. && $(MAKE) static_lib
